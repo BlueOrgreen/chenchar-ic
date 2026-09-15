@@ -1,0 +1,126 @@
+/* chenchar-ic：克制的文档入口首页 */
+:root {
+  --rp-c-brand: #0f766e;
+  --rp-c-brand-dark: #0d9488;
+  --rp-c-brand-darker: #115e59;
+  --rp-c-brand-light: #14b8a6;
+  --rp-c-brand-lighter: #2dd4bf;
+  --rp-c-brand-tint: rgba(15, 118, 110, 0.08);
+
+  --rp-home-hero-secondary-color: #0f766e;
+  /* 站名用实色，避免默认渐变字 */
+  --rp-home-hero-title-color: #0f766e;
+  --rp-home-hero-title-bg: #0f766e;
+}
+
+html:not(.dark) {
+  --rp-home-background-bg:
+    radial-gradient(
+      70% 50% at 100% 0%,
+      rgba(15, 118, 110, 0.1) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      60% 45% at 0% 0%,
+      rgba(15, 118, 110, 0.06) 0%,
+      transparent 60%
+    ),
+    var(--rp-c-bg);
+}
+
+html.dark {
+  --rp-home-hero-title-color: #2dd4bf;
+  --rp-home-hero-title-bg: #2dd4bf;
+  --rp-home-background-bg:
+    radial-gradient(
+      70% 50% at 100% 0%,
+      rgba(15, 118, 110, 0.22) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      60% 45% at 0% 0%,
+      rgba(45, 212, 191, 0.08) 0%,
+      transparent 60%
+    ),
+    var(--rp-c-bg);
+}
+
+/* Rspress 默认首页背景只有 1000px，超出后会露出页面底色形成色带 */
+.rp-home-background {
+  height: max(1000px, 100vh);
+}
+
+/* Hero：收紧留白，更像文档门厅 */
+.rp-home-hero {
+  margin: 3.5rem auto 2.5rem;
+  align-items: center;
+}
+
+.rp-home-hero__container {
+  gap: 1.5rem;
+}
+
+.rp-home-hero__title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.rp-home-hero__subtitle {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.25;
+}
+
+.rp-home-hero__tagline {
+  max-width: 28rem;
+  line-height: 1.6;
+}
+
+.rp-home-hero__actions {
+  gap: 0.75rem;
+}
+
+.rp-home-hero__image {
+  max-width: min(280px, 38vw);
+}
+
+.rp-home-hero__image-img {
+  width: 100%;
+  height: auto;
+}
+
+/* Features：并列入口，弱化营销卡片感 */
+.rp-home-feature {
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
+  padding-inline: 24px;
+}
+
+.rp-home-feature__card {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  backdrop-filter: none;
+  transition:
+    border-color 0.2s ease-out,
+    color 0.2s ease-out;
+}
+
+.rp-home-feature__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.rp-home-feature__detail {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  font-weight: 400;
+  color: var(--rp-c-text-2);
+}
+
+@media (max-width: 1000px) {
+  .rp-home-hero {
+    margin: 1.5rem auto 1rem;
+  }
+
+  .rp-home-hero__tagline {
+    max-width: none;
+  }
+}

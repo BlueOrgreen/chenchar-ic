@@ -1,0 +1,7 @@
+node_modules
+doc_build
+.git
+.agents
+skills-lock.json
+docs/superpowers
+.dockerignore

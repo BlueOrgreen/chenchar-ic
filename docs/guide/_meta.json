@@ -1,0 +1,12 @@
+[
+  {
+    "type": "dir",
+    "name": "intro",
+    "label": "入门"
+  },
+  {
+    "type": "dir",
+    "name": "basics",
+    "label": "基础"
+  }
+]

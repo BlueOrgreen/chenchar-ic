@@ -1,0 +1,8 @@
+services:
+  chenchar-ic:
+    build: .
+    image: chenchar-ic:latest
+    container_name: chenchar-ic
+    ports:
+      - "8080:80"
+    restart: unless-stopped
