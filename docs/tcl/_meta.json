@@ -1,0 +1,31 @@
+[
+  "index",
+  "template",
+  "report-cells",
+  "pt-dmsa-hold-eco",
+  "innovus-ccopt-cts",
+  "pt-report-power",
+  "innovus-estimate-area",
+  "innovus-01-import-design",
+  "innovus-02-floorplan",
+  "innovus-03-powerplan",
+  "power-stape-pso",
+  "m10-power-stripe",
+  "globalnetconnect-vdd-override",
+  "power-via-add-delete",
+  "via1-insert",
+  "innovus-pg-special",
+  "innovus-select-macros",
+  "via-pillar-pg-keepout",
+  "innovus-edit-duplicate-change-layer",
+  {
+    "type": "dir",
+    "name": "check",
+    "label": "检查"
+  },
+  {
+    "type": "dir",
+    "name": "timing_report",
+    "label": "Timing 报告"
+  }
+]

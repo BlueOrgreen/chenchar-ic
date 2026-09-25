@@ -1,0 +1,19 @@
+[
+  "design-scale",
+  "pr-density",
+  "core-to-die-finfet-pitch",
+  "pin-avoid-m1-m2",
+  "clock-port-mid-io",
+  "pin-editor-remaining",
+  "pg-term-local-vdd",
+  "dirty-memory-near-io",
+  "tcd-process-calibration",
+  "endcap-row-corner",
+  "power-switch-core-channel",
+  "floorplan-post-check",
+  "low-power-design",
+  "upf-power-intent",
+  "isolation-cell",
+  "powerplan",
+  "placement"
+]

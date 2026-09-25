@@ -10,8 +10,8 @@ hero:
       text: 芯片知识
       link: /guide/
     - theme: alt
-      text: 博客
-      link: /blog/
+      text: 项目经验
+      link: /experience/
   image:
     src: /rspress-icon.png
     alt: chenchar-ic
@@ -22,7 +22,10 @@ features:
   - title: 看知识库
     details: 按主题整理笔记树：从入门概念到时序、工艺等基础主题。
     link: /guide/
-  - title: 从学习地图开始
-    details: 不确定从哪读起时，先看数字 IC 学习路径再下钻。
-    link: /guide/intro/learning-map
+  - title: 项目经验
+    details: 按工艺与阶段沉淀签核口径、经验数字与项目踩坑，持续积累。
+    link: /experience/
+  - title: TCL 脚本
+    details: 收集 EDA 流程里可复用的 Tcl 片段与小工具，按场景归档。
+    link: /tcl/
 ---

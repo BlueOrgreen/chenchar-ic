@@ -2,6 +2,7 @@ node_modules
 doc_build
 .git
 .agents
+.cursor
 skills-lock.json
 docs/superpowers
 .dockerignore

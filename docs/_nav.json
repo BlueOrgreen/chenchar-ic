@@ -13,5 +13,15 @@
     "text": "芯片知识",
     "link": "/guide/",
     "activeMatch": "/guide/"
+  },
+  {
+    "text": "项目经验",
+    "link": "/experience/",
+    "activeMatch": "/experience/"
+  },
+  {
+    "text": "TCL 脚本",
+    "link": "/tcl/",
+    "activeMatch": "/tcl/"
   }
 ]

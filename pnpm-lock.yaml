@@ -12,6 +12,9 @@ importers:
         specifier: ^2.0.19
         version: 2.0.21(@rspack/core@2.2.4(@swc/helpers@0.5.23))(micromark-util-types@2.0.2)(micromark@4.0.2)
     devDependencies:
+      '@rspack/core':
+        specifier: 2.2.4
+        version: 2.2.4(@swc/helpers@0.5.23)
       '@types/node':
         specifier: ^22.8.1
         version: 22.20.2
