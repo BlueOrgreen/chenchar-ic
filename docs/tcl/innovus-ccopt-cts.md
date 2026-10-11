@@ -82,6 +82,7 @@ saveDesign ../save/CTS.enc
 
 ## 相关笔记
 
+- [set_ccopt_property target_skew](./ccopt-target-skew.md) —— `target_skew 0.02` 含义与用途
 - [TCL 脚本](./index.md)
 - [脚本页模板](./template.md)
 - [PT DMSA Hold ECO 脚本](./pt-dmsa-hold-eco.md)

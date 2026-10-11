@@ -20,7 +20,6 @@ addStripe \
         -start_offset 1 -uda m10_power_stripe -create_pins 1 -power_domains {PD_PSO PD_AW_ON}
 ```
 
-同目录可直接 source 的版本：[m10-power-stripe.tcl](/tcl/m10-power-stripe.tcl)
 
 **转录注记（存疑处均照录未改）：**
 

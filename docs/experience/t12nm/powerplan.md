@@ -12,19 +12,32 @@ date: 2026-09-21
 
 ## 口径
 
+#### 电阻计算公式
+
+![alt text](./images/r-l-w.png)
+
+R：电阻
+Rs：方块电阻
+L：长度
+W：横截面
+
 **Powerplan 做什么？**  
 创建从芯片**供电源头**到各个 **cell、PG pin** 的**供电通路**。
 
-**在 T12nm 中，powerplan 的结构是：M1 和 M2 是 power rail，并联 dual rail（du rail）。**
+**在 T12nm 中，powerplan 的结构是：M1 和 M2 是 power rail，并联 dual rail（du rail）。** **为什么要做 dual rail？**
 
-### Domain 的 VDD 逻辑连接
 
-| Power domain | VDD 逻辑连到 |
-|--------------|--------------|
-| **PD_PSO** | **VDD_LOCAL** |
-| **PD_AW_ON** | **VDD_CORE** |
+M1和M2的线宽小，使用dual rail 并联，电阻能变小，从而改善IR Drop
 
-### 金属层（1P11M）
+**在T12nm中也使用了Via Pillar, 为什么要用Via Pillar？** 
+
+Via Pillar 本质也是通过 并联让电阻变小，从而改善IR Drop
+
+**double patterning** 
+
+在T12nm中 M1 - M3 都是 double patterning，有2张mask；因此做powerplan的时候没有添加 via1（会有spacing问题），需要到chipfinish阶段时才会添加 via1
+
+## T12nm Metal（1P11M）
 
 本项目用 **1P11M**（1 层 Poly + 11 层 Metal）：
 
@@ -44,25 +57,33 @@ M11 / M10 ── 顶层 Power
   M2 ∥ M1 ── power rail → cell / PG pin
 ```
 
-### Power Switch 与高低层
+## Domain 的  逻辑连接
 
-**Power switch 相关电源：TVDD、VDD_LOCAL、VSS。**
+![power-pg-connect](./images/power-pg-connect.png)
 
-高层的 **VDD_CORE** 打到 Power switch **低层（M1、M2）的 VDD_LOCAL**。
+| Power domain | VDD 逻辑连到 |
+|--------------|--------------|
+| **PD_PSO** power switch domain | **VDD_LOCAL** |
+| **PD_AW_ON** power always on domain | **VDD_CORE** |
 
-```text
-高层 VDD_CORE
-      │
-      ▼
- Power switch（TVDD / VDD_LOCAL / VSS）
-      │
-      ▼
- M1 / M2 的 VDD_LOCAL
-```
+**Power Switch Domain**
+- VDD -> VDD_LOCAL
+- VPP -> VDD_CORE
+- VSS -> VSS
+- VBB -> VSS
 
-与上表一致：`PD_AW_ON` 走 **VDD_CORE**；经 switch 后到 `PD_PSO` 的 **VDD_LOCAL**。
+**Power Always On Domain**
+- VDD -> VDD_CORE
+- VPP -> VDD_CORE
+- VSS -> VSS
+- VBB -> VSS
+
+**VPP：N-well 连接 的 PG pin**
+
 
 ## 供电路径总览（结合 Power Switch）
+
+![alt text](./images/power-all.png)
 
 ```text
 封装 / 顶层电源
@@ -88,26 +109,6 @@ M11 / M10 ── 顶层 Power
 VSS：全程共地，回流路径与供电对称
 ```
 
-### ① 高层段（M11→M9→中间层）：把 global 电铺满全片
-
-- M11/M10 留给顶层打 Power，M9 是本设计内部 PG 的最高层，从这里开始往下做 mesh / stripe。
-- 这一段走 **global 网（VDD_CORE）**，不经过 switch、永远有电；`PD_AW_ON` 这种 always-on 域直接挂在它上面。
-
-### ② Power Switch：唯一的水闸
-
-- 输入 `VDD_CORE`，输出 `VDD_LOCAL`；开关一断，下游整个 `PD_PSO` 域掉电——power gating 省功耗的机制（PSO = Power Shut Off）。
-- switch 自身的控制 / 驱动一路由 **TVDD** 常供电（即 secondary PG 的实例，见下文 Q 节）。
-- 摆放策略（core / channel 分开插、channel 先挡 blockage、边界加 switch 防 IR Drop）详见 [Power Switch：Core / Channel 分区与边界](./power-switch-core-channel.md)。
-
-### ③ 到 std cell：M1/M2 dual rail
-
-- switch 输出的 `VDD_LOCAL` 落到 M1+M2 **并联双轨**：同一电源两层一起走、via 连通，等效电阻小、电流分流，改善 IR Drop。
-- row 里每个 std cell 的 primary PG pin 从这两层轨上取电。
-
-### ④ 到 Memory：本地 M5 stripe
-
-- memory 电流大，只靠 rail 不够：在 `TEM5N28HPC*` box 内 `addStripe` 打 **M5 / VDD_LOCAL** 条，且 std 区挡 M5 route blk、指定 memory 区外挡 M5/M6，把 M5 层留给 memory 本地电源（详见 [Innovus PG Special（Memory M5）](../../tcl/innovus-pg-special.md)）。
-- stripe 经 via 叠层接到 memory PG pin；Design Browser 看 PG term，memory 侧看到的就是 `VDD_LOCAL` + `VSS`。
 
 ### 名词对号入座
 
@@ -121,16 +122,29 @@ VSS：全程共地，回流路径与供电对称
 | **M1/M2 dual rail** | std cell 取电层 |
 | **M5 memory stripe** | memory 本地供电层 |
 
-**一句话：高层把 global 电（VDD_CORE）铺满全片 → power switch 这道闸决定哪片区域有电 → 闸后变成 VDD_LOCAL，std cell 走 M1/M2 双轨、memory 走自己的 M5 stripe 拿电。**
+**一句话：高层从M9 把 global 电（VDD_CORE）打到power switch 的 TVDD → power switch 这道闸决定哪片区域有电 → 闸后变成 VDD_LOCAL，std cell 走 M1/M2 双轨、memory 走自己的 M5 stripe 拿电。**
+
+
+## Core区域 的供电结构（T12nm）
+
+M9 的 VDD_CORE -> 打到M1的power switch -> pso 开启后 -> TVDD 拿到电 -> 相邻的 VDD_LOCAL 拿到电
+
+core区域其它的rail如何拿到电？
+
+T28nm通过 mesh 网络结构拿到， T12通过 via pillar 反供从而使得core区域其它rail也拿到电
+
+core区域的 Tapcell 的 VPP 连接到 VDD_CORE, VDD 连接到 VDD_LOCAL
 
 ## Memory 的供电结构（T12nm）
+![alt text](./images/memory-elec2.png)
 
-**总路径：**
+![alt text](./images/memory-elec.png)
 
-```text
-Global VDD → TVDD → Power Switch 打开 → VDD_LOCAL 的 power rail
-    → 通过 pillar 反爬到高层 → 然后送进 Memory
-```
+**回答版：**Global VDD → TVDD → switch打开 -> VDD_LOCAL 的power rail -> 通过 via pillar 反供到高层去，然后在送进memory中
+
+**理解版：**
+
+> Memory 的pin 在M4， 连接到M6出去， M6拉出去就近找到PowerSwitch（在这个过程中是先通过 Via Pillar 连接到外面 Pillar 的M3，然后连接到 power switch所供的 VDD_LOCAL ）
 
 **物理连接（从 Memory 往回看）：**
 
@@ -160,41 +174,8 @@ Memory（PD_PSO 区）
 - 典型包括 ring、mesh、stripe、via 叠层，以及接到 std cell / macro 的 PG pin（含 local 如 `VDD_LOCAL`）。  
 - 本项目路径：高层 **VDD_CORE** → Power switch → 低层 **M1/M2 的 VDD_LOCAL** → Memory / cell。Switch 侧电源名为 **TVDD、VDD_LOCAL、VSS**。
 
-### T12nm 层结构
 
-| 层 | 角色 |
-|------|------|
-| **M1** | Power rail |
-| **M2** | Power rail |
-| **M9** | 本设计 PG 最高层 |
-| **M10 / M11** | 顶层打 Power |
-| 关系（底层） | M1/M2 **并联 dual rail** |
-
-底层用 M1 + M2 双轨并联供电，再往上接到更高层 stripe / mesh 与源头。
-
-## Q：并联 dual rail 是什么？
-
-在 **「M1 和 M2 是 power rail，并联 dual rail」** 里：
-
-### Dual rail
-
-一般指沿 std cell / row **成对铺的电源轨**：一边（或一层）走 **电源**，一边走 **地**（VDD / VSS，或 local 电源 / VSS）。不是随便两根信号线，而是**供电用的双轨**。
-
-### 并联（M1 ∥ M2）
-
-**M1 和 M2 都当 power rail**，再用 via 把同一电源网在两层上**并联**起来：
-
-```text
-更高层 stripe / mesh
-        │
-   ┌────┴────┐
-  M2 power ──via── M1 power ──► cell / PG pin
-   └────┬────┘
-```
-
-效果是：等效电阻更小，电流可分流，有利于 **IR Drop**。
-
-### 一句话
+## 并联 dual rail 是什么？
 
 **Dual rail** = 电源/地那套供电双轨；**并联** = 同一供电在 M1、M2 两层一起走、via 连上，不是只靠单层。
 
@@ -225,11 +206,6 @@ power switch
 
 pillar 即 power switch cell 上的 stapling / via pillar，其创建脚本见 [power_stape_pso](../../tcl/power-stape-pso.md)。
 
-## VPP
-
-**VPP：N-well 的连接**（well bias 供电网络，常见于 memory macro 的 PG pin）。
-
-T12nm 本项目中，**tap cell 的 secondary PG pin（VPP）逻辑连接到 VDD_CORE**（详见上文「Primary PG / Secondary PG」一节）。
 
 ## Powerplan 质量检查
 

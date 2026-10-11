@@ -10,6 +10,8 @@ date: 2026-09-21
 > 来源：截图识别整理（picture-tcl）  
 > 阶段：Powerplan / PG keepout
 
+![alt text](./images/via-pillar-keepout.png)
+
 ## 完整脚本
 
 ```tcl

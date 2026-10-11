@@ -33,12 +33,26 @@ date: 2026-09-22
 | 图 14 | M7 VDD + M8 VSS/VDD addStripe + channel_1/2/3 定义 + core_box_new |
 | 图 15 | M9 channel1 / channel2 pillar |
 
+
+## Via Stapling
+
+![alt text](./images/addStripe.png)
+
+{X1 X2 X3}
+
+X1: 长度
+
+X2: 第一根中心点距离边部的高度
+
+X3: 中心点距离上一根中心点的距离
+
 ## 完整脚本
 
 ```tcl
 # ===== 图 1 =====
 editDelete -type Special
 
+# 逻辑连接
 globalNetConnect VDD_LOCAL -type pgpin -pin {VPP} -inst * -powerDomain PD_PSO
 globalNetConnect VDD_CORE -type pgpin -pin {VPP} -inst * -powerDomain PD_AW_ON
 globalNetConnect VSS -type pgpin -pin {VBB} -inst * -powerDomain PD_PSO
@@ -50,6 +64,7 @@ add_tracks \
 
 set tmps [dbShape [dbShape -output rect [dbGet [dbGet top.Fplan.pBlkgs.type hard -p ].boxes] SIZEX 0.2 ]
 
+# 先给Memory盖上Routing Blockage，然后给core区域打pg
 foreach tmp $tmps {
 createRouteBlk -box $tmp -layer "M3 M4 M5 M6 M7 M8" -name rblk_for_core -spacing 0
 }
@@ -78,9 +93,11 @@ set core2die_bottom [dbget top.fplan.core2bot]
 set core2die_left [dbget top.fplan.core2left]
 
 # ===== 图 2 =====
+# sroute 铺上 power rail
 sroute -connect { corePin } -blockPinTarget { nearestTarget } -corePinTarget { none } -nets { VDD_LOCAL VSS } -uda m1_power_rail_pso -corePinWidth 0.032 -powerDomains PD_PSO
 sroute -connect { corePin } -blockPinTarget { nearestTarget } -corePinTarget { none } -nets { VDD_CORE VSS } -uda m1_power_rail_aw_on -corePinWidth 0.032 -powerDomains PD_AW_ON
 
+# M1、M2 dual rail
 setAddStripeMode -ignore_DRC true -stacked_via_top_layer M2 -stacked_via_bottom_layer M2
 #addStripe -layer M2 -direction horizontal -nets {VSS VDD_LOCAL} -width 0.064 -set_to_set_distance 1.152 -snap_wire_center_to_grid Grid -spacing 0.512 -start_offset -0.032 -uda m2_power_stripe_pso  -power_domains PD_PSO
 #addStripe -layer M2 -direction horizontal -nets {VSS VDD_CORE} -width 0.064 -set_to_set_distance 1.152 -snap_wire_center_to_grid Grid -spacing 0.512 -start_offset -0.032 -uda m2_power_stripe_aw_on  -power_domains PD_AW_ON
@@ -96,6 +113,7 @@ deselectAll
 #set via1_list [dbQuery -layers 1 -objType sViaInst -areas $box]
 #dbDeleteObj $via1_list
 
+# 给Power Switch的 VDD_CORE 并联很多的Metal，从而使得电阻减小
 source ../script/proc_myron.pg.tcl
 source ../script/proc_myron_invs.tcl
 # M1 space = 0.512; width = 0.064
@@ -286,6 +304,7 @@ set pso_llx_list [dbget [dbget top.insts.cell.name HDR20XSICWD1BWP16P90CPD -p2].
 
 setAddStripeMode -ignore_DRC true -stacked_via_top_layer M3 -stacked_via_bottom_layer M3
 
+# 加 Via Pillar M3 M4 M5 M6 M7 M8
 # M3 VSS
 set length  "3.708"
 set stapling_offset [expr $core2die_bottom + $length / 2 - 0.252 / 2]
@@ -525,7 +544,6 @@ foreach llx $pso_llx_list {
 }
 ```
 
-同目录可直接 source 的版本：[power-stape-pso.tcl](/tcl/power-stape-pso.tcl)
 
 **转录注记（存疑处均照录未改）：**
 

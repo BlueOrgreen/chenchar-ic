@@ -106,12 +106,16 @@ addStripe \
         -uda memory_m8_VSS
 
 
+# 连接 Tapcell 的VPP Pin
 set gp_list [dbGet head.allCells.name *VPP_VSS]
+# 先抓 Pin
 set cells [dbGet [dbGet top.insts.cell.name *VPP_VSS -P2].name]
+# 再抓到 该 Pin 的 VPP 
 foreach gp $gp_list {
    setPGPinUseSignalRoute $gp:VPP
 }
 
+# 将这个 Pin GlobalConnect 到 VDD_CORE
 foreach cell $cells {
    globalNetConnect VDD_CORE  -type pgpin -pin VPP -singleInstance $cell -override
 }
@@ -119,6 +123,7 @@ foreach cell $cells {
 setAttribute -net VDD_CORE -skip_Routing false
 setNanoRouteMode -routeStripeLayerRange {4 9}
 add_ndr -name vdd1_rule -width_multiplier {M4:M9 2}
+
 
 # ===== 图 4 =====
 set tiehi_pins [dbget [dbget top.PGNets.name VDD_CORE -p].instTerms]
@@ -150,13 +155,32 @@ verify_PG_short -net VDD_CORE -no_routing_blkg
 verify_PG_short -net VDD_LOCAL -no_routing_blkg
 verify_PG_short -net VSS -no_routing_blkg
 
+# 打上 Via1孔为了 verify connectivity 之后可以删掉
+editPowerVia -top_layer M2 -bottom_layer M1 -orthogonal_only 0 -add_vias 1 -split_long_via {0.135 0.111 0.042} -skip_via_on_pin {pad block cover standardcell physicalpin} -uda dual_rail_vail_yf
+
+editDelete -subclass dual_rail_yf
+
+verifyConnectivity -type special -noAntenna -noWeakConnect -noUnroutedNet -error 100000 -warning 50 -net VDD_CORE -noSoftPGConnect
+
+verifyConnectivity -type special -noAntenna -noWeakConnect -noUnroutedNet -error 100000 -warning 50 -net VDD_LOCAL -noSoftPGConnect
+
+
+
+verifyConnectivity -type special -noAntenna -noWeakConnect -noUnroutedNet -error 100000 -warning 50 -net VSS -noSoftPGConnect
+
+
 saveDesign ../db/powerplan.enc
 
 set rundate [clock format [clock seconds] -format %Y_%m_%d_%I:%M%p]
 echo "END : 03_powerplan $rundate" >> ../report/runtime.log
 ```
 
-同目录可直接 source 的版本：[innovus-03-powerplan.tcl](/tcl/innovus-03-powerplan.tcl)
+```tcl
+# 修复 floating drc问题
+editTrim -type float -nets VDD_LOCAL
+
+editTrim -type float -nets VSS
+```
 
 图 1 中 `source` 的 `power_stape_pso.tcl`（power switch cell 上的 stapling stripe / via pillar 脚本）也已单独整理：[Power Switch Stapling Stripe（power_stape_pso）](./power-stape-pso.md)
 

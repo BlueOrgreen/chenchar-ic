@@ -15,5 +15,18 @@
   "upf-power-intent",
   "isolation-cell",
   "powerplan",
-  "placement"
+  "placement",
+  "cts",
+  "cts-path-budget",
+  "cts-ccopt-flow",
+  "ocv-setting",
+  "tie-cell",
+  "timing-eco-refineplace",
+  "timing-optimization",
+  "power-optimization",
+  "icg-enable-setup",
+  "power-switch-nwell-type",
+  "ir-drop-after-signoff",
+  "power-switch-congestion",
+  "flow-checklist"
 ]

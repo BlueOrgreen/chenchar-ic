@@ -14,7 +14,7 @@ date: 2026-09-20
 
 **做完 floorplan 后要检查：**
 
-1. **EndCap**：到 **Calibre DRC** 中检查。  
+1. **EndCap**：在边边角角的类型，最终确认还是得在 Cablibre阶段  
 2. **Tapcell**：做 **verify**（如 `verifyWellTap`）。  
 3. **Memory 有没有摆放错**：用 **Calibre** 检查 **Memory 之间是否有 DRC 问题**。
 

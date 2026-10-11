@@ -16,7 +16,6 @@ date: 2026-09-24
 globalNetConnect VDD_LOCAL -type pgpin -pin {VDD} -inst * -powerDomain PD_PSO -override
 ```
 
-同目录可直接 source 的版本：[globalnetconnect-vdd-override.tcl](/tcl/globalnetconnect-vdd-override.tcl)
 
 **转录注记（存疑处均照录未改）：**
 

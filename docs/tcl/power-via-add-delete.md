@@ -29,14 +29,17 @@ innovus 58> ##editDelete -subclass dual_rail_via1
 ## 完整脚本
 
 ```tcl
+setViaGenMode -reset
 # 图 1：打上 PowerVia 并命名（-uda dual_rail_via1）
-editPowerVia -top_layer M2 -bottom_layer M1 -orthogonal_only 0 -add_vias 1 -split_long_via {0.135 0.111 0.042} -skip_via_on_pin {pad block cover standardcell physicalpin} -uda dual_rail_via1
+editPowerVia -top_layer M2 -bottom_layer M1 -orthogonal_only 0 -add_vias 1 -split_long_via {0.135 0.111 0.042} -skip_via_on_pin {pad block cover standardcell physicalpin} -uda 
+
+
+dual_rail_via1
 
 # 图 2：删除这一类 via
 editDelete -subclass dual_rail_via1
 ```
 
-同目录可直接 source 的版本：[power-via-add-delete.tcl](/tcl/power-via-add-delete.tcl)
 
 **转录注记（存疑处均照录未改）：**
 

@@ -10,6 +10,10 @@ date: 2026-09-20
 > 阶段：低功耗 / 电源规划  
 > 类型：方法清单 / 经验记录
 
+
+
+![Low Power Design](./images/low-power-design.png)
+
 ## 口径
 
 | # | 手段 | 含义 |
@@ -35,24 +39,6 @@ date: 2026-09-20
    从而调整阈值电压，改善 **performance**，并改善功耗。  
 7. **Multi-bit Reg**：多比特寄存器打包，也属于低功耗相关设置（相对单比特 reg 可减面积/时钟相关开销）。
 
-## Clock Gating enable 为何容易 setup violation
-
-**根本原因：ICG 是 clock tree 中间的节点。**
-
-如图，`latency1` 远大于 `latency2`：
-
-| 路径 | 含义 | 相对长短 |
-|------|------|----------|
-| latency1 | CLK → Ctrl 寄存器时钟端（**launch**） | 长 |
-| latency2 | CLK → ICG 时钟端（**capture**） | 短 |
-| EN 数据路径 | Ctrl → 组合逻辑 → ICG 的 EN | 要在短 capture 窗口内赶到 |
-
-Launch 时钟到得晚、capture 时钟到得早，EN 可用时间被吃掉，所以 **ICG enable pin 容易 setup violation**。
-
-PR 里要按这个结构看，而不是当普通 FF-to-FF：CTS 之后重点查 ICG EN 的 setup。图中还标了 Pre-CTS 时 ICG 下游 clock latency 按 0 估（偏乐观），以及 `set_clock_gating_check`、Early Clock Flow。
-
-![ICG enable setup](./images/icg-enable-setup.png)
-
 ## HVT / SVT / LVT 的 PPA 差异
 
 **低阈值电压改善 performance，高阈值电压改善 leakage。**
@@ -65,6 +51,7 @@ PR 里要按这个结构看，而不是当普通 FF-to-FF：CTS 之后重点查 
 
 - 低阈值标准单元：速度快、泄漏功耗高。  
 - 高阈值标准单元：速度慢、泄漏功耗低。
+- 不同阈值电压cell的面积是一样的
 
 ![Multi-Vth leakage vs delay](./images/multi-vth-ppa.png)
 
@@ -73,7 +60,7 @@ PR 里要按这个结构看，而不是当普通 FF-to-FF：CTS 之后重点查 
 **公式里动态功耗跟电压成正比**（图中动态功耗公式含 \(V_{dd}^{2}\)，降压对动态功耗效果显著）：
 
 \[
-P_{dyn} = C_{eff} \cdot V_{dd}^{2} \cdot f_{clock}
+P_{dyn} = C_{eff} ✖️ V_{dd}^{2} ✖️ f_{clock}
 \]
 
 口径（来自课件）：
@@ -118,23 +105,11 @@ VDD1 ──► Power Switch (VIN) ──► VDD1_SW ──► VA2
 
 ![Two Nwell vs Common Nwell](./images/power-switch-nwell.png)
 
-## 为何 Physical / Timing Signoff 后还要看 IR Drop
-
-芯片做完 **physical signoff** 和 **timing signoff** 后，仍要看 **IR Drop**，因为：
-
-1. 芯片**不同位置的电压不一样**（供电阻抗 / 电流导致压降）。  
-2. **电压跟功耗成正比**（动态功耗与电压相关，见 Multi-Voltage 公式）。  
-
-因此要看在**电压偏低**的位置，功耗（以及依赖电压的时序/功能裕量）是否还满足。
-
-Physical / Timing 过了只说明几何与标称/约束下的时序；IR Drop 查的是**片上实际供电是否够匀、够高**。
-
-## 原图
-
-![Low Power Design](./images/low-power-design.png)
 
 ## 相关笔记
 
+- [T12nm · ICG Enable Pin 容易 Setup 违例](./icg-enable-setup.md) —— Clock Gating enable 的 setup 问题单独成篇
+- [T12nm · 为何 Signoff 后还要看 IR Drop](./ir-drop-after-signoff.md) —— IR Drop 问答单独成篇
 - [T12nm · Macro / Std Cell 供电（Global→Switch→Local→Memory）](./pg-term-local-vdd.md)
 - [T12nm · Power Switch：Core / Channel 与边界](./power-switch-core-channel.md)
 - [Innovus 02 Floorplan](../../tcl/innovus-02-floorplan.md)

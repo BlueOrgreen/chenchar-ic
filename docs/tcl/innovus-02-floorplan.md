@@ -39,6 +39,7 @@ foreach libraryname $dontuse_ref {
 floorPlan -site core -d 652.95 652.608 2.34 2.304 2.34 2.304 -flip s
 addObjFPlanCutBox cell ananke_core "499.95 499.968 652.95 652.608"
 
+# 针对低功耗要会写 upf  -> t12nm/upf-power-intent.md
 read_power_intent -1801 ../input/ananke_core.upf
 commit_power_intent -power_domain
 
@@ -51,6 +52,7 @@ file mkdir ../report/floorplan
 reportPowerDomain -file ../report/floorplan/power_domain.rpt
 
 setPinAssignMode -pinEditInBatch true
+# T12 是 doule patterning 工艺，不允许 IO Port 出在 M1 - 3 上
 editPin -fixOverlap 1 -unit MICRON -spreadDirection clockwise -edge 3 -layer 5 -spreadType start -spacing 0.16 -start 499.95 499.968 -pin [get_object_name [all_inputs ]]
 editPin -fixOverlap 1 -unit MICRON -spreadDirection clockwise -edge 3 -layer 7 -spreadType start -spacing 0.16 -start 499.95 499.968 -pin [get_object_name [all_outputs ]]
 setPinAssignMode -pinEditInBatch false
@@ -60,6 +62,7 @@ setPinAssignMode -pinEditInBatch false
 #defOut -floorplan -noStdCells ../data/floorplan.def.gz
 source ../script/place_mem.tcl
 
+# 加 TCD 脚本
 set DTCD_cell_list {N12_DTCD_BEOL_V9_20161212 N12_DTCD_BEOL_V8_20161212 N12_DTCD_BEOL_V7_20161212 N12_DTCD_BEOL_V6_20161212 N12_DTCD_BEOL_V5_20161212 N12_DTCD_BEOL_V4_20161212 N12_DTCD_BEOL_V3_20161212 N12_DTCD_BEOL_V2_20161212 N12_DTCD_BEOL_V1_20161212 N12_DTCD_BEOL_M9_20161212 N12_DTCD_BEOL_M8_20161212 N12_DTCD_BEOL_M7_20161212 N12_DTCD_BEOL_M6_20161212 N12_DTCD_BEOL_M5_20161212 N12_DTCD_BEOL_M4_20161212 N12_DTCD_BEOL_M3_20161212 N12_DTCD_BEOL_M2_20161212 N12_DTCD_BEOL_M1_20161212 N12_DTCD_BEOL_M10_20161212 N12_DTCD_FEOL_20161212}
 
 set i 0
@@ -118,6 +121,7 @@ set_well_tap_mode \
 
 addEndCap -powerDomain PD_PSO
 
+# 给channel盖上 Blockage
 set channel_1 {491.31 2.88 501.48 107.136}
 set channel_2 {584.91 2.88 595.08 197.568}
 set channel_3 {77.58 549.504 87.75 649.728}
@@ -139,6 +143,7 @@ set mtcmos_boundary_distance [expr $core_sizex - $mtcmos_offset * 2 - $mtcmos_wi
 # add boundary pso cell
 addPowerSwitch -column -powerDomain PD_PSO -globalSwitchCellName HDR20XSICWD1BWP16P90CPD -leftoffset $mtcmos_offset -horizontalPitch $mtcmos_boundary_distance -areaType boxlist -skipRows 1 -ignoreSoftBlockage -instancePrefix PSO_CORE_BOUNDARY_ -noFixedStdCellOverlap -noEnableChain
 
+# 给边界处盖上 blockage
 set boundry_pso_llx [expr $mtcmos_offset + $core2die_left]
 set boundry_pso_urx [expr $mtcmos_offset + $core2die_left + $mtcmos_width]
 set boundry_pso_lly [dbGet top.fPlan.corebox_lly]
@@ -175,7 +180,9 @@ addPowerSwitch -column -powerDomain PD_PSO -globalSwitchCellName HDR20XSICWD1BWP
 set_well_tap_mode -inRowOffset 15
 addWellTap -cell TAPCELLBWP16P90CPD -cellInterval 30 -prefix WELLTAP -powerDomain PD_AW_ON
 addWellTap -cell TAPCELLBWP16P90CPD_VPP_VSS -cellInterval 30 -prefix WELLTAP -powerDomain PD_PSO
-#verifyWellTap -cell " TAPCELLBWP16P90CPD* -rule 48
+
+#verifyWellTap -cell " TAPCELLBWP16P90CPD* -rule 48 
+# -rule 50 是根据 LUP.6 的设计规则
 verifyWellTap -cell "BOUNDARY_NTAPBWP16P90CPD BOUNDARY_PTAPBWP16P90CPD TAPCELLBWP16P90CPD BOUNDARY_NTAPBWP16P90CPD_VPP_VSS BOUNDARY_PTAPBWP16P90CPD_VPP_VSS TAPCELLBWP16P90CPD_VPP_VSS" -rule 50
 
 saveDesign ../db/floorplan.enc

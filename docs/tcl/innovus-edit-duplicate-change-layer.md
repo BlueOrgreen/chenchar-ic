@@ -18,7 +18,7 @@ editChangeLayer -layer_horizontal M2
 editChangeWidth -width_horizontal 0.064
 ```
 
-**转录注记：** 图中无可见提示符，以上 3 行按原图顺序逐行转录。原图共 4 行，第 4 行被窗口底边截断，仅可见前几个字符（约为 `editC...`），完整命令无法辨认，未收录，请对照下图确认。同目录下有可直接 source 的 [innovus-edit-duplicate-change-layer.tcl](/tcl/innovus-edit-duplicate-change-layer.tcl)。
+**转录注记：** 图中无可见提示符，以上 3 行按原图顺序逐行转录。原图共 4 行，第 4 行被窗口底边截断，仅可见前几个字符（约为 `editC...`），完整命令无法辨认，未收录，请对照下图确认。
 
 ## 原图
 
