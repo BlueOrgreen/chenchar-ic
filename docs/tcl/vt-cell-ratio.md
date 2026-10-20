@@ -45,3 +45,4 @@ Report: vt ratio
 ## 相关笔记
 
 - [示例：统计 cell 数量](./report-cells.md)
+- [检查 VT Cell 数量与比例（BWP16P90）](./check/vt-ratio-bwp16p90.md)

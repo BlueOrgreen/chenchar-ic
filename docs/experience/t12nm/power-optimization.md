@@ -31,10 +31,16 @@ date: 2026-10-08
 
 ### PowerAware Opt 设置脚本
 
+完整片段（含开关、截图）见 Tcl 目录：[PowerAware Opt](../../tcl/power-aware-opt.md)。优化 corner 用 **tt_25**。
+
 ```tcl
-setDesignMode -powerEffort high
-setOptMode -leakageToDynamicRatio 1
-setOptMode -powerEffort high
+set if_power_aware 1
+
+if {$if_power_aware} {
+  setDesignMode -powerEffort high
+  setOptMode -leakageToDynamicRatio 1
+  setOptMode -powerEffort high
+}
 ```
 
 ## 动态功耗怎么优化
@@ -47,6 +53,7 @@ setOptMode -powerEffort high
 
 ## 相关笔记
 
+- [Leakage 优化](./leakage-optimization.md) —— VT Swap / Down Size / MBFF
 - [Timing Optimization 手段](./timing-optimization.md) —— 姊妹篇；High Effort Flow 的 `setOptMode -highEffortOptCells` 在那篇
 - [低功耗设计手段](./low-power-design.md) —— power gating / UPF / ICG 等架构级手段
 - [为何 Signoff 后还要看 IR Drop](./ir-drop-after-signoff.md)

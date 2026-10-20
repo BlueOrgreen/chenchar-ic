@@ -14,7 +14,7 @@ export default defineConfig({
   logoText: 'chenchar-ic',
   siteOrigin: 'https://www.ic.chenchar.com',
   route: {
-    exclude: ['superpowers/**/*'],
+    exclude: ['superpowers/**/*', 'jl/**/*'],
   },
   plugins: [],
   themeConfig: {

@@ -15,5 +15,5 @@ description: chenchar-ic 芯片知识库入口
 
 ### 基础
 
-- [时序分析概念扫盲](./basics/timing-basics.md)
+- [建立时间与保持时间（Setup / Hold）](./basics/timing-basics.md)
 - [工艺节点与命名速览](./basics/process-nodes.md)

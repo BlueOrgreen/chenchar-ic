@@ -26,8 +26,11 @@
   "create-region",
   "vt-cell-ratio",
   "high-opt",
+  "power-aware-opt",
+  "eco-delete-repeater",
   "ccopt-clock-tree-debug",
   "cts-related-scripts",
+  "hilite-path",
   "insert-port-buffer",
   {
     "type": "dir",

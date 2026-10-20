@@ -1,0 +1,276 @@
+<title>小红书转行封面</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#10151A;        /* 工作区底 */
+  --cover-bg:#0C1116;  /* 封面底 */
+  --card:#141B21;      /* 卡片 */
+  --card-in:#0B1014;   /* 卡片内层 */
+  --ink:#F2EDE3;       /* 暖纸白 */
+  --dim:#98A4AC;       /* 蓝灰 */
+  --faint:#5C6A72;     /* 更弱 */
+  --accent:#E8993F;    /* 铜 */
+  --accent-ink:#10151A;
+  --line:#26323A;      /* 走线 */
+  --line-strong:#2E3C45;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:'Noto Sans SC','PingFang SC',system-ui,sans-serif;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:30px 20px 64px}
+
+/* ---------- 页头 ---------- */
+.kicker{font:500 12px/1 'IBM Plex Mono',monospace;letter-spacing:.38em;color:var(--accent)}
+h1{font-size:clamp(24px,4.5vw,34px);font-weight:700;letter-spacing:.02em;margin:14px 0 10px;text-wrap:balance}
+.lede{color:var(--dim);font-size:15px;line-height:1.7;max-width:56ch;margin:0}
+
+/* ---------- 版式切换 ---------- */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 6px}
+.tab{
+  font:500 13px/1 'IBM Plex Mono',monospace;letter-spacing:.06em;
+  padding:11px 18px;border:1px solid var(--line);border-radius:999px;
+  background:transparent;color:var(--dim);cursor:pointer;
+}
+.tab:hover{border-color:var(--line-strong);color:var(--ink)}
+.tab[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- 舞台与裁切角 ---------- */
+.stage{display:flex;justify-content:center;padding:30px 0 4px}
+.frame{position:relative;padding:16px}
+.crop{position:absolute;width:18px;height:18px;border:0 solid var(--faint)}
+.crop.tl{top:0;left:0;border-top-width:2px;border-left-width:2px}
+.crop.tr{top:0;right:0;border-top-width:2px;border-right-width:2px}
+.crop.bl{bottom:0;left:0;border-bottom-width:2px;border-left-width:2px}
+.crop.br{bottom:0;right:0;border-bottom-width:2px;border-right-width:2px}
+.size-note{padding:14px 0 4px;text-align:center;font:400 12px/1 'IBM Plex Mono',monospace;letter-spacing:.22em;color:var(--faint)}
+
+/* ---------- 封面（3:4，cqw 随宽度缩放） ---------- */
+.cover{
+  container-type:inline-size;
+  width:min(640px,calc((100vh - 250px)*.75),calc(100vw - 72px));
+  aspect-ratio:3/4;position:relative;overflow:hidden;
+  background:var(--cover-bg);
+  display:flex;flex-direction:column;
+  padding:7%;gap:3.5cqw;
+}
+/* placement row：横向 dual rail */
+.cover::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(to bottom,
+    transparent 0 58px,var(--line) 58px 59px,
+    transparent 59px 63px,var(--line) 63px 64px,transparent 64px 122px);
+}
+/* 竖向 power stripe */
+.cover::after{
+  content:"";position:absolute;top:0;bottom:0;left:24%;width:3px;
+  background:var(--accent);opacity:.12;pointer-events:none;
+}
+.die{position:absolute;inset:3.2%;border:1px solid rgba(56,74,84,.55);pointer-events:none}
+.die i{
+  position:absolute;right:2.6cqw;bottom:2cqw;font:400 2cqw/1 'IBM Plex Mono',monospace;
+  font-style:normal;letter-spacing:.3em;color:var(--faint);
+}
+.c-head{position:relative;display:flex;flex-direction:column;gap:3cqw}
+.c-eyebrow{
+  display:flex;align-items:center;gap:1.8cqw;
+  font:500 3cqw/1 'IBM Plex Mono',monospace;letter-spacing:.42em;color:var(--dim);
+}
+.c-eyebrow::before{content:"";width:1.5cqw;height:1.5cqw;background:var(--accent)}
+
+.big{font-family:'ZCOOL QingKe HuangYou','Noto Sans SC',sans-serif;font-weight:400;line-height:1.02;position:relative}
+.big .ghost{font-size:16.5cqw;letter-spacing:.08em;color:var(--faint)}
+@supports (-webkit-text-stroke:1px #000){
+  .big .ghost{color:transparent;-webkit-text-stroke:.42cqw var(--ink)}
+}
+.big .solid{font-size:16.5cqw;letter-spacing:.05em;color:var(--accent)}
+.trace{display:flex;align-items:center;gap:1.8cqw;margin:.6cqw 0;position:relative}
+.trace .dot{width:1.7cqw;height:1.7cqw;border-radius:50%;background:var(--accent);flex:none}
+.trace .seg{flex:1;height:.45cqw;min-height:2px;background:var(--line-strong)}
+.trace .arrow{width:0;height:0;border-left:2.4cqw solid var(--line-strong);border-block:1.4cqw solid transparent;flex:none}
+.c-sub{font-size:4.7cqw;font-weight:500;line-height:1.55;position:relative}
+.c-sub em{font-style:normal;color:var(--accent)}
+
+/* 封面内嵌卡片（浏览器 / 终端 / 清单） */
+.mock{
+  position:relative;margin:auto;width:100%;
+  background:var(--card);border:1px solid var(--line);border-radius:2cqw;
+  box-shadow:0 3cqw 7cqw rgba(0,0,0,.5);
+}
+.mock-bar{display:flex;align-items:center;gap:1.3cqw;padding:2.2cqw 2.6cqw;border-bottom:1px solid var(--line)}
+.mock-bar b{width:1.5cqw;height:1.5cqw;border-radius:50%;background:var(--line-strong);flex:none}
+.url{
+  flex:1;margin-left:1cqw;font:400 2.5cqw/1 'IBM Plex Mono',monospace;color:var(--faint);
+  background:var(--card-in);border:1px solid var(--line);border-radius:999px;padding:1.2cqw 2.4cqw;
+}
+.mock-body{padding:4cqw 3.4cqw;display:flex;flex-direction:column;gap:2.6cqw;align-items:stretch}
+.search{
+  display:flex;align-items:center;gap:1.8cqw;
+  border:1px solid var(--line-strong);background:var(--card-in);border-radius:999px;padding:2.2cqw 3cqw;
+}
+.search svg{width:3cqw;height:3cqw;flex:none;stroke:var(--dim);stroke-width:2;fill:none}
+.search span{font-size:2.8cqw;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chips{display:flex;gap:1.6cqw;flex-wrap:wrap}
+.chip{
+  font:400 2.5cqw/1 'IBM Plex Mono',monospace;color:var(--dim);
+  border:1px solid var(--line);border-radius:.9cqw;padding:1.3cqw 2cqw;
+}
+.term{font:400 2.7cqw/2 'IBM Plex Mono',monospace;padding:1cqw .6cqw}
+.term p{margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.term .p{color:var(--faint)}
+.term .c{color:var(--ink)}
+.term .e{color:var(--accent)}
+.check{list-style:none;margin:0;padding:1cqw .4cqw;display:flex;flex-direction:column;gap:2.4cqw}
+.check li{display:flex;align-items:center;gap:2.2cqw;font-size:3.1cqw;font-weight:500;color:var(--ink)}
+.check b{
+  width:3.2cqw;height:3.2cqw;flex:none;border-radius:.7cqw;
+  border:1px solid var(--accent);color:var(--accent);
+  display:grid;place-items:center;font:500 2.1cqw/1 'IBM Plex Mono',monospace;
+}
+.c-tags{
+  position:relative;display:flex;align-items:center;gap:2cqw;flex-wrap:wrap;
+  font:500 2.9cqw/1.5 'IBM Plex Mono',monospace;color:var(--dim);
+}
+.c-tags em{font-style:normal;color:var(--accent)}
+
+/* 数字型 */
+.num-row{display:flex;align-items:baseline;gap:3cqw;position:relative}
+.num{font:500 26cqw/1 'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--accent)}
+.num-unit{font-family:'ZCOOL QingKe HuangYou','Noto Sans SC',sans-serif;font-size:11cqw;color:var(--ink)}
+.num-sub{font-size:4.2cqw;line-height:1.7;color:var(--ink);font-weight:500;position:relative}
+
+/* 干货型 */
+.knap-row{display:flex;align-items:baseline;gap:2.4cqw;position:relative}
+.knap{font:500 21cqw/1 'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;color:var(--accent)}
+.knap-unit{font-family:'ZCOOL QingKe HuangYou','Noto Sans SC',sans-serif;font-size:9cqw;color:var(--ink)}
+
+/* ---------- 使用说明 ---------- */
+.how{margin-top:44px;border-top:1px solid var(--line);padding-top:30px}
+.how h2{font-size:17px;font-weight:700;margin:0 0 18px;letter-spacing:.04em}
+.how ol{margin:0;padding-left:0;list-style:none;display:grid;gap:14px}
+.how li{display:flex;gap:14px;color:var(--dim);font-size:14.5px;line-height:1.75}
+.how li b{font:500 13px/1 'IBM Plex Mono',monospace;color:var(--accent);border:1px solid var(--line);border-radius:6px;padding:6px 9px;height:fit-content;flex:none}
+.how code{font:400 13px 'IBM Plex Mono',monospace;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+.colophon{margin-top:40px;font:400 12px/1.8 'IBM Plex Mono',monospace;letter-spacing:.14em;color:var(--faint)}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="kicker">XHS COVER KIT · 3:4</p>
+    <h1>转行封面模板</h1>
+    <p class="lede">程序员 → 芯片后端的小红书笔记封面。三套版式按发帖角度切换，对准裁切角整块截图即可。</p>
+  </header>
+
+  <div class="tabs" role="group" aria-label="封面版式">
+    <button class="tab" data-v="a" aria-pressed="true">A · 故事型</button>
+    <button class="tab" data-v="b" aria-pressed="false">B · 数字型</button>
+    <button class="tab" data-v="c" aria-pressed="false">C · 干货型</button>
+  </div>
+
+  <div class="stage">
+    <div class="frame">
+      <span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>
+
+      <!-- ═══ A 故事型：转行身份反差 ═══ -->
+      <section class="cover" id="cover-a">
+        <span class="die"><i>1P11M · DUAL RAIL</i></span>
+        <div class="c-head">
+          <p class="c-eyebrow">转行实录 · 第 1 篇</p>
+          <div class="big">
+            <div class="ghost">程序员</div>
+            <div class="trace"><span class="dot"></span><span class="seg"></span><span class="arrow"></span></div>
+            <div class="solid">芯片后端</div>
+          </div>
+          <p class="c-sub">我把转行笔记做成了<em>免费网站</em></p>
+        </div>
+        <div class="mock">
+          <div class="mock-bar"><b></b><b></b><b></b><span class="url">chenchar-ic</span></div>
+          <div class="mock-body">
+            <div class="search">
+              <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+              <span>搜：powerplan · CTS · STA</span>
+            </div>
+            <div class="chips"><span class="chip">TCL 脚本</span><span class="chip">项目经验</span><span class="chip">转行路线</span></div>
+          </div>
+        </div>
+        <p class="c-tags">30+ 篇笔记<em> · </em>真实项目<em> · </em>全免费</p>
+      </section>
+
+      <!-- ═══ B 数字型：转行天数 ═══ -->
+      <section class="cover" id="cover-b" hidden>
+        <span class="die"><i>1P11M · DUAL RAIL</i></span>
+        <div class="c-head">
+          <p class="c-eyebrow">转行实录 · 第 2 篇</p>
+          <div class="num-row"><span class="num">365</span><span class="num-unit">天</span></div>
+          <p class="num-sub">从写业务代码，<br>到画 12nm 芯片的 powerplan。</p>
+        </div>
+        <div class="mock">
+          <div class="mock-bar"><b></b><b></b><b></b><span class="url">innovus — tcl</span></div>
+          <div class="mock-body">
+            <div class="term">
+              <p><span class="p">innovus 58&gt;</span> <span class="c">globalNetConnect VDD_LOCAL -pin {VDD} -override</span></p>
+              <p><span class="p">innovus 59&gt;</span> <span class="c">editPowerVia -top_layer M2 -bottom_layer M1 -add_vias 1</span></p>
+              <p><span class="e">**info:</span> <span class="p">notes uploaded to chenchar-ic</span></p>
+            </div>
+          </div>
+        </div>
+        <p class="c-tags">每天一张图<em> · </em>攒成 30+ 篇笔记</p>
+      </section>
+
+      <!-- ═══ C 干货型：笔记清单 ═══ -->
+      <section class="cover" id="cover-c" hidden>
+        <span class="die"><i>1P11M · DUAL RAIL</i></span>
+        <div class="c-head">
+          <p class="c-eyebrow">IC 后端学习笔记</p>
+          <div class="knap-row"><span class="knap">30+</span><span class="knap-unit">篇</span></div>
+        </div>
+        <div class="mock">
+          <div class="mock-bar"><b></b><b></b><b></b><span class="url">chenchar-ic</span></div>
+          <div class="mock-body">
+            <ul class="check">
+              <li><b>✓</b>Innovus 全流程 TCL，截图逐行讲</li>
+              <li><b>✓</b>Powerplan · CTS · STA 项目笔记</li>
+              <li><b>✓</b>低功耗：UPF · Power Switch · ICG</li>
+              <li><b>✓</b>12nm 真实项目经验，持续更新</li>
+            </ul>
+          </div>
+        </div>
+        <p class="c-tags">GitHub 搜<em> chenchar-ic </em>· 免费开放</p>
+      </section>
+
+    </div>
+  </div>
+  <p class="size-note">1242 × 1656 · 3:4 · 裁切角内整块截图</p>
+
+  <div class="how">
+    <h2>怎么用</h2>
+    <ol>
+      <li><b>01</b><span>点上方标签切换版式：A 讲转行故事、B 讲天数与变化、C 直接晒干货清单，对应系列里的不同篇目。</span></li>
+      <li><b>02</b><span>浏览器缩放调到 150% 以上，让封面尽量占满屏幕，对准四个裁切角把封面区域整块截图，宽度 ≥1242px 最清晰。</span></li>
+      <li><b>03</b><span>改文案：每张封面在 HTML 里都有 <code>&lt;!-- ═══ A 故事型 --&gt;</code> 这样的注释块，直接改里面的字就能复用模板；配色和字号都跟着容器宽度等比缩放，不用重调。</span></li>
+    </ol>
+    <p class="colophon">chenchar-ic · ZCOOL QingKe HuangYou / Noto Sans SC / IBM Plex Mono · copper on blue-black</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var tabs  = document.querySelectorAll('.tab');
+  var covers = {a: document.getElementById('cover-a'),
+                b: document.getElementById('cover-b'),
+                c: document.getElementById('cover-c')};
+  function show(k){
+    if(!covers[k]) k = 'a';
+    for(var v in covers) covers[v].hidden = (v !== k);
+    tabs.forEach(function(t){ t.setAttribute('aria-pressed', t.dataset.v === k ? 'true' : 'false'); });
+    try{ localStorage.setItem('xhsCoverVariant', k); }catch(e){}
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.v); }); });
+  var saved = null;
+  try{ saved = localStorage.getItem('xhsCoverVariant'); }catch(e){}
+  if(saved) show(saved);
+})();
+</script>

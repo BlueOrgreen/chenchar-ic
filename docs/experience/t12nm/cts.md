@@ -118,7 +118,7 @@ set_db cts_top_fanout_threshold 10000
 ## 相关笔记
 
 - [CTS：Clock Path / Data Path 预算](./cts-path-budget.md)
-- [CTS：CCOpt Mode、步骤、Log 与 Debug](./cts-ccopt-flow.md)
+- [CTS：CCOpt Mode、步骤、漏 Tree 与 Debug](./cts-ccopt-mode-debug.md)
 - [Clock Port：位置 / NDR 2w2s / Shielding](./clock-port-mid-io.md)
 - [Innovus CCOpt CTS 脚本](../../tcl/innovus-ccopt-cts.md)
 - [Placement 做什么](./placement.md)

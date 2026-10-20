@@ -1,4 +1,5 @@
 [
   "input-floating",
-  "iso-buf-always-on"
+  "iso-buf-always-on",
+  "vt-ratio-bwp16p90"
 ]

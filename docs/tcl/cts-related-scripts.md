@@ -139,10 +139,26 @@ findingFarthestSink -in_clock_tree coreclk -root coreclk -skew_group coreclk/fun
 
 ---
 
+## 五、驱动设大
+
+```tcl
+# 原先的 cell 驱动为
+u_cortexa7noram/u_ca7tlb/U6537 IGA22D48WP40PI40
+
+# 驱动设大 pt_shell
+size_cell u_cortexa7noram/u_ca7tlb/U6537 IGA22D68WP40PI40
+
+# 查看这款cell有哪些驱动
+get_lib_cell */IGA22D*8WP40PI40
+```
+
+---
+
 ## 相关笔记
 
 - [Clock Tree Debug 高频命令](./ccopt-clock-tree-debug.md)
 - [Innovus CCOpt CTS 脚本](./innovus-ccopt-cts.md)
 - [CCOpt target_skew](./ccopt-target-skew.md)
-- [CTS CCOpt Flow](../experience/t12nm/cts-ccopt-flow.md)
+- [CTS：CCOpt Mode、漏 Tree 与 Debug](../experience/t12nm/cts-ccopt-mode-debug.md)
+- [Case：Clock Tree ECO 做短 Launch Path](../experience/t12nm/cts-eco-shorten-launch.md)
 - [CTS 要点：Sink Type / insertion_delay](../experience/t12nm/cts.md)

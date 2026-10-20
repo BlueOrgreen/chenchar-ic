@@ -51,6 +51,6 @@ report_ccopt_skew_groups -summary -file ../report/CTS/skew_group.rpt
 ## 相关笔记
 
 - [Innovus CCOpt CTS 脚本](./innovus-ccopt-cts.md)
-- [CTS：CCOpt Mode、步骤、Log 与 Debug](../experience/t12nm/cts-ccopt-flow.md)
+- [CTS：CCOpt Mode、步骤、漏 Tree 与 Debug](../experience/t12nm/cts-ccopt-mode-debug.md)
 - [CTS 要点：Sink Type / SDC→CCOpt / Clock NDR / Routing](../experience/t12nm/cts.md)
 - [CTS：Clock Path / Data Path 预算](../experience/t12nm/cts-path-budget.md)
